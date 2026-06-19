@@ -21,8 +21,8 @@ class LoginViewModel @Inject constructor(
 ) : ViewModel() {
 
     data class LoginUiState(
-        val email: String = "",
-        val password: String = "",
+        val email: String = "nitinrawat2006@gmail.com",
+        val password: String = "admin123@",
         val isLoading: Boolean = false,
         val error: String? = null,
         val success: UserData? = null
@@ -86,6 +86,7 @@ class LoginViewModel @Inject constructor(
                     isLoading = false,
                     error = e.message ?: "An unexpected error occurred"
                 )
+                e.printStackTrace()
             }
         }
     }

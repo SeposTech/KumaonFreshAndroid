@@ -279,8 +279,8 @@ fun LoginContent(
 @Composable
 fun PreviewLoginContent() {
     LoginContent(
-        email = "test@example.com",
-        password = "password123",
+        email = "nitinrawat2006@example.com",
+        password = "admin123@",
         onEmailChange = {},
         onPasswordChange = {},
         onLoginClick = {},
