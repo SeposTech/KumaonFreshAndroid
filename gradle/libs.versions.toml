@@ -11,6 +11,7 @@ composeBom = "2025.07.00"
 navigation = "2.9.3"
 gson = "2.13.1"
 kotlinx-coroutines = "1.10.2"
+mockito-kotlin = "6.3.0"
 hilt = "2.57"                # Latest as of Aug 2025
 hilt_compiler = "2.57"
 androidx_hilt_navigation = "1.2.0"
@@ -66,6 +67,8 @@ accompanist-placeholder = { module = "com.google.accompanist:accompanist-placeho
 androidx-security-crypto = { module = "androidx.security:security-crypto", version.ref = "securityCrypto" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 coil-svg = { module = "io.coil-kt:coil-svg", version.ref = "coil" }
+mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockito-kotlin" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
