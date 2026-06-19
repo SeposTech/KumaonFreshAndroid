@@ -20,20 +20,43 @@ class LoginViewModel @Inject constructor(
     private val tokenManager: TokenManager
 ) : ViewModel() {
 
-    sealed interface UiState {
-        object Idle : UiState
-        object Loading : UiState
-        data class Success(val message: String, val data: UserData) : UiState
-        data class Error(val error: String) : UiState
+    data class LoginUiState(
+        val email: String = "",
+        val password: String = "",
+        val isLoading: Boolean = false,
+        val error: String? = null,
+        val success: UserData? = null
+    )
+
+    private val _uiState = MutableStateFlow(LoginUiState())
+    val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
+
+    fun onEmailChange(email: String) {
+        _uiState.value = _uiState.value.copy(email = email, error = null)
     }
 
-    private val _uiState = MutableStateFlow<UiState>(UiState.Idle)
-    val uiState: StateFlow<UiState> = _uiState.asStateFlow()
+    fun onPasswordChange(password: String) {
+        _uiState.value = _uiState.value.copy(password = password, error = null)
+    }
 
 
-    fun login(email: String, password: String) {
+    fun login() {
+        val currentState = _uiState.value
+        val email = currentState.email.trim()
+        val password = currentState.password
+
+        if (email.isBlank() || password.isBlank()) {
+            _uiState.value = currentState.copy(error = "Please enter email and password")
+            return
+        }
+
         viewModelScope.launch {
-            _uiState.value = UiState.Loading
+            _uiState.value = currentState.copy(
+                isLoading = true,
+                error = null,
+                success = null
+            )
+
             try {
                 val result = loginUseCase(
                     LoginRequest(
@@ -41,28 +64,29 @@ class LoginViewModel @Inject constructor(
                         password = password
                     )
                 )
-                if (result.data != null) {
-                    Log.d("TAG", "response: ${result.data}")
-                    tokenManager.saveToken(result.data.token)
-                    _uiState.value = UiState.Success(
-                        message = result.message ?: "Login successful",
-                        data = result.data
+
+                val userData = result.data
+                if (userData != null) {
+                    Log.d("LoginViewModel", "response: $userData")
+                    tokenManager.saveToken(userData.token)
+                    _uiState.value = currentState.copy(
+                        isLoading = false,
+                        success = userData,
+                        error = null
                     )
                 } else {
-                    _uiState.value = UiState.Error(
-                        error = result.message ?: "Login failed"
+                    _uiState.value = currentState.copy(
+                        isLoading = false,
+                        error = result.message
                     )
                 }
             } catch (e: Exception) {
-                Log.e("TAG", "Login error: ${e.message}")
-                _uiState.value = UiState.Error(
+                Log.e("LoginViewModel", "Login error: ${e.message}", e)
+                _uiState.value = currentState.copy(
+                    isLoading = false,
                     error = e.message ?: "An unexpected error occurred"
                 )
             }
-
-
         }
-
     }
-
 }
