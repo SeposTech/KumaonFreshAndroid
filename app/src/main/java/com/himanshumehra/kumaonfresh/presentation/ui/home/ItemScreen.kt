@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -21,13 +22,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.himanshumehra.kumaonfresh.data.remote.api.dto.response.ItemData
-import com.himanshumehra.kumaonfresh.presentation.ui.cart.CartViewModel
+import com.himanshumehra.kumaonfresh.presentation.ui.cart.AddToCartViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ItemScreen(
     onBackClick: () -> Unit,
-    cartViewModel: CartViewModel = hiltViewModel(),
+    onCartClick: () -> Unit,
+    cartViewModel: AddToCartViewModel = hiltViewModel(),
     viewModel: ItemViewModel = hiltViewModel()
 ) {
     val items by viewModel.items.collectAsState()
@@ -39,6 +41,7 @@ fun ItemScreen(
         isLoading = isLoading,
         cartUiState = cartUiState,
         onBackClick = onBackClick,
+        onCartClick = onCartClick,
         onAddClick = {
             viewModel.incrementQuantity(it)
             cartViewModel.addToCart(
@@ -66,23 +69,25 @@ fun ItemScreenContent(
     isLoading: Boolean,
     cartUiState: Any?,
     onBackClick: () -> Unit,
+    onCartClick: () -> Unit,
     onAddClick: (ItemData) -> Unit,
     onRemoveClick: (ItemData) -> Unit,
     onResetCartState: () -> Unit
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
+    val cartItemCount = items.sumOf { it.itemQuantity }
 
     // Show snackbar when cart state changes
     LaunchedEffect(cartUiState) {
         when (cartUiState) {
-            is CartViewModel.UiState.Success -> {
+            is AddToCartViewModel.UiState.Success -> {
                 snackbarHostState.showSnackbar(
                     message = cartUiState.message,
                     duration = SnackbarDuration.Short
                 )
                 onResetCartState()
             }
-            is CartViewModel.UiState.Error -> {
+            is AddToCartViewModel.UiState.Error -> {
                 snackbarHostState.showSnackbar(
                     message = cartUiState.error,
                     duration = SnackbarDuration.Short
@@ -103,6 +108,24 @@ fun ItemScreenContent(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Back"
                         )
+                    }
+                },
+                actions = {
+                    IconButton(onClick = onCartClick) {
+                        BadgedBox(
+                            badge = {
+                                if (cartItemCount > 0) {
+                                    Badge {
+                                        Text(text = cartItemCount.toString())
+                                    }
+                                }
+                            }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.ShoppingCart,
+                                contentDescription = "Open cart"
+                            )
+                        }
                     }
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
@@ -150,8 +173,9 @@ fun ItemScreenPreview() {
             ItemData(1, "Desc", 2, "", "Item 2", 20.0, 5)
         ),
         isLoading = false,
-        cartUiState = CartViewModel.UiState.Idle,
+        cartUiState = AddToCartViewModel.UiState.Idle,
         onBackClick = {},
+        onCartClick = {},
         onAddClick = {},
         onRemoveClick = {},
         onResetCartState = {}

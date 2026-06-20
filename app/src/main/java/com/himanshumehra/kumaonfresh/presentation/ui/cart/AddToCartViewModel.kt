@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.himanshumehra.kumaonfresh.data.local.db.datastore.TokenManager
 import com.himanshumehra.kumaonfresh.data.remote.api.dto.request.AddToCart
-import com.himanshumehra.kumaonfresh.data.remote.api.dto.response.CartResponse
+import com.himanshumehra.kumaonfresh.data.remote.api.dto.response.AddToCartResponse
 import com.himanshumehra.kumaonfresh.domain.usecase.AddToCartUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CartViewModel @Inject constructor(
+class AddToCartViewModel @Inject constructor(
     private val addToCartUseCase: AddToCartUseCase,
     private val tokenManager: TokenManager
 ) : ViewModel() {
@@ -22,7 +22,7 @@ class CartViewModel @Inject constructor(
     sealed interface UiState {
         object Idle : UiState
         object Loading : UiState
-        data class Success(val message: String, val data: CartResponse) : UiState
+        data class Success(val message: String, val data: AddToCartResponse) : UiState
         data class Error(val error: String) : UiState
     }
 

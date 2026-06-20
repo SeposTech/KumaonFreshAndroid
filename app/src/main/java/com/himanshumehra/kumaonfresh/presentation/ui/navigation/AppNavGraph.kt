@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.himanshumehra.kumaonfresh.presentation.ui.cart.CartDetailScreen
 import com.himanshumehra.kumaonfresh.presentation.ui.login.LoginScreen
 import com.himanshumehra.kumaonfresh.presentation.ui.registration.RegistrationPage
 
@@ -23,7 +24,13 @@ fun AppNavGraph() {
         composable(route = "item/{catId}", arguments = listOf(navArgument("catId") {
             type = NavType.LongType
         })) { backStackEntry ->
-            ItemScreen(onBackClick = { navController.popBackStack() })
+            ItemScreen(
+                onBackClick = { navController.popBackStack() },
+                onCartClick = { navController.navigate("cartDetail") }
+            )
+        }
+        composable(route = "cartDetail") {
+            CartDetailScreen(onBackClick = { navController.popBackStack() })
         }
     }
 }

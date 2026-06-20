@@ -4,7 +4,7 @@ import com.himanshumehra.kumaonfresh.data.repository.CategoryRepositoryImp
 import com.himanshumehra.kumaonfresh.data.repository.CreateUserRepositoryImp
 import com.himanshumehra.kumaonfresh.data.repository.ItemRepositoryImp
 import com.himanshumehra.kumaonfresh.data.repository.LoginRepositoryImp
-import com.himanshumehra.kumaonfresh.data.repository.AddToCartRepositoryImp
+import com.himanshumehra.kumaonfresh.data.repository.CartRepositoryImp
 import com.himanshumehra.kumaonfresh.domain.repository.CategoryRepository
 import com.himanshumehra.kumaonfresh.domain.repository.CreateUserRepository
 import com.himanshumehra.kumaonfresh.domain.repository.ItemResponse
@@ -38,6 +38,6 @@ abstract class RepositoryModule {
 
     @Binds
     @Singleton
-    abstract fun bindCartRepository(addToCartRepositoryImp: AddToCartRepositoryImp): CartRepository
+    abstract fun bindCartRepository(addToCartRepositoryImp: CartRepositoryImp): CartRepository
 
 }
