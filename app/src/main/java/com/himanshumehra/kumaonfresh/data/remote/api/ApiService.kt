@@ -1,7 +1,9 @@
 package com.himanshumehra.kumaonfresh.data.remote.api
 
+import com.himanshumehra.kumaonfresh.data.remote.api.dto.request.AddToCart
 import com.himanshumehra.kumaonfresh.data.remote.api.dto.request.CreateUserRequest
 import com.himanshumehra.kumaonfresh.data.remote.api.dto.request.LoginRequest
+import com.himanshumehra.kumaonfresh.data.remote.api.dto.response.CartResponse
 import com.himanshumehra.kumaonfresh.data.remote.api.dto.response.CategoryResponse
 import com.himanshumehra.kumaonfresh.data.remote.api.dto.response.CreateUserResponse
 import com.himanshumehra.kumaonfresh.data.remote.api.dto.response.ItemResponse
@@ -11,7 +13,6 @@ import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.POST
-import retrofit2.http.Query
 
 interface ApiService {
 
@@ -27,6 +28,13 @@ interface ApiService {
     @FormUrlEncoded
     @POST("item/getItems")
     suspend fun getItems(@Field("categoryId") catId: Long): ItemResponse
+
+    @POST("cart/addToCart")
+    suspend fun addToCart(@Body addToCart: AddToCart): CartResponse
+
+    @FormUrlEncoded
+    @POST("cart/getCart")
+    suspend fun getCart(@Field("userId") userId: String): CartResponse
 
 
 }

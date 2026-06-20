@@ -29,8 +29,18 @@ class TokenManager @Inject constructor(@ApplicationContext context: Context) {
         }
     }
 
+    fun saveUserId(userId: String) {
+        sharedPreferences.edit {
+            putString("user_id", userId)
+        }
+    }
+
     fun getToken(): String? {
         return sharedPreferences.getString("jwt_token", null)
+    }
+
+    fun getUserId(): String? {
+        return sharedPreferences.getString("user_id", null)
     }
 
     fun clearToken() {

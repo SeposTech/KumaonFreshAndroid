@@ -4,10 +4,12 @@ import com.himanshumehra.kumaonfresh.data.repository.CategoryRepositoryImp
 import com.himanshumehra.kumaonfresh.data.repository.CreateUserRepositoryImp
 import com.himanshumehra.kumaonfresh.data.repository.ItemRepositoryImp
 import com.himanshumehra.kumaonfresh.data.repository.LoginRepositoryImp
+import com.himanshumehra.kumaonfresh.data.repository.AddToCartRepositoryImp
 import com.himanshumehra.kumaonfresh.domain.repository.CategoryRepository
 import com.himanshumehra.kumaonfresh.domain.repository.CreateUserRepository
 import com.himanshumehra.kumaonfresh.domain.repository.ItemResponse
 import com.himanshumehra.kumaonfresh.domain.repository.LoginRepository
+import com.himanshumehra.kumaonfresh.domain.repository.CartRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -34,7 +36,8 @@ abstract class RepositoryModule {
     @Singleton
     abstract fun bindItemResponse(itemRepositoryImp: ItemRepositoryImp): ItemResponse
 
+    @Binds
+    @Singleton
+    abstract fun bindCartRepository(addToCartRepositoryImp: AddToCartRepositoryImp): CartRepository
+
 }
-
-
-

@@ -69,6 +69,7 @@ class LoginViewModel @Inject constructor(
                 if (userData != null) {
                     Log.d("LoginViewModel", "response: $userData")
                     tokenManager.saveToken(userData.token)
+                    tokenManager.saveUserId(userData.id)
                     _uiState.value = currentState.copy(
                         isLoading = false,
                         success = userData,
