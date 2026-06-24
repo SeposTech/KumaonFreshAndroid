@@ -1,14 +1,17 @@
 package com.himanshumehra.kumaonfresh.data.remote.api
 
+import com.himanshumehra.kumaonfresh.data.remote.api.dto.request.AddQuantityToCart
 import com.himanshumehra.kumaonfresh.data.remote.api.dto.request.AddToCart
 import com.himanshumehra.kumaonfresh.data.remote.api.dto.request.CreateUserRequest
 import com.himanshumehra.kumaonfresh.data.remote.api.dto.request.LoginRequest
+import com.himanshumehra.kumaonfresh.data.remote.api.dto.request.RemoveQuantityFromCart
 import com.himanshumehra.kumaonfresh.data.remote.api.dto.response.AddToCartResponse
 import com.himanshumehra.kumaonfresh.data.remote.api.dto.response.CartDetailResponse
 import com.himanshumehra.kumaonfresh.data.remote.api.dto.response.CategoryResponse
 import com.himanshumehra.kumaonfresh.data.remote.api.dto.response.CreateUserResponse
 import com.himanshumehra.kumaonfresh.data.remote.api.dto.response.ItemResponse
 import com.himanshumehra.kumaonfresh.data.remote.api.dto.response.LoginResponse
+import com.himanshumehra.kumaonfresh.data.remote.api.dto.response.QuantityAddRemoveResponse
 import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -36,6 +39,16 @@ interface ApiService {
     @FormUrlEncoded
     @POST("cart/getCart")
     suspend fun getCart(@Field("userId") userId: String): CartDetailResponse
+
+    @POST("cart/addQuantityToCart")
+    suspend fun addQuantityToCart(
+        @Body request: AddQuantityToCart
+    ): QuantityAddRemoveResponse
+
+    @POST("cart/removeQuantityToCart")
+    suspend fun removeQuantityFromCart(
+        @Body request: RemoveQuantityFromCart
+    ): QuantityAddRemoveResponse
 
 
 }

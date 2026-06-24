@@ -6,3 +6,16 @@ data class AddToCart(
     val quantity: Int = 0,
     val itemPrice: Double = 0.00
 )
+
+
+data class AddQuantityToCart(
+    val userId: String? = null,
+    val itemId: String? = null,
+    val quantity: Int = 0
+)
+
+data class RemoveQuantityFromCart(
+    val userId: String? = null,
+    val itemId: String? = null,
+    val quantity: Int = 0
+);

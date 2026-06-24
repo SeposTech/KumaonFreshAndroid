@@ -11,6 +11,7 @@ data class CartDetailResponse(
     val message: String,
     val data: List<CartItem>?
 )
+
 data class CartItem(
     val categoryId: String,
     val itemDescription: String,
@@ -19,4 +20,16 @@ data class CartItem(
     val itemName: String,
     val itemPrice: Double,
     val itemQuantity: Int
+)
+
+data class QuantityAddRemoveResponse(
+    val status: String,
+    val message: String,
+    val data: QuantityAddRemove
+)
+
+data class QuantityAddRemove(
+    val userId: String,
+    val itemId: String,
+    val quantity: Int
 )
