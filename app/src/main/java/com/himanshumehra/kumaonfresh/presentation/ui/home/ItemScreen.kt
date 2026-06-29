@@ -21,14 +21,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.himanshumehra.kumaonfresh.data.remote.api.dto.response.ItemData
+import com.himanshumehra.kumaonfresh.data.remote.api.dto.response.Item
 import com.himanshumehra.kumaonfresh.presentation.ui.cart.AddToCartViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ItemScreen(
-    onBackClick: () -> Unit,
-    onCartClick: () -> Unit,
+    onBackClick: (Item) -> Unit,
+    onCartClick: (Item) -> Unit,
     cartViewModel: AddToCartViewModel = hiltViewModel(),
     viewModel: ItemViewModel = hiltViewModel()
 ) {
@@ -65,13 +65,13 @@ fun ItemScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ItemScreenContent(
-    items: List<ItemData>,
+    items: List<Item>,
     isLoading: Boolean,
     cartUiState: Any?,
-    onBackClick: () -> Unit,
-    onCartClick: () -> Unit,
-    onAddClick: (ItemData) -> Unit,
-    onRemoveClick: (ItemData) -> Unit,
+    onBackClick: (Item) -> Unit,
+    onCartClick: (Item) -> Unit,
+    onAddClick: (Item) -> Unit,
+    onRemoveClick: (Item) -> Unit,
     onResetCartState: () -> Unit
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
@@ -87,6 +87,7 @@ fun ItemScreenContent(
                 )
                 onResetCartState()
             }
+
             is AddToCartViewModel.UiState.Error -> {
                 snackbarHostState.showSnackbar(
                     message = cartUiState.error,
@@ -94,6 +95,7 @@ fun ItemScreenContent(
                 )
                 onResetCartState()
             }
+
             else -> {}
         }
     }
@@ -103,7 +105,11 @@ fun ItemScreenContent(
             CenterAlignedTopAppBar(
                 title = { Text(text = "Items") },
                 navigationIcon = {
-                    IconButton(onClick = onBackClick) {
+                    IconButton(onClick = {
+                        onBackClick(
+                            items.firstOrNull() ?: return@IconButton
+                        )
+                    }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Back"
@@ -111,7 +117,11 @@ fun ItemScreenContent(
                     }
                 },
                 actions = {
-                    IconButton(onClick = onCartClick) {
+                    IconButton(onClick = {
+                        onCartClick(
+                            items.firstOrNull() ?: return@IconButton
+                        )
+                    }) {
                         BadgedBox(
                             badge = {
                                 if (cartItemCount > 0) {
@@ -149,13 +159,12 @@ fun ItemScreenContent(
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(2),
                     contentPadding = PaddingValues(8.dp),
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
                 ) {
                     items(items) { item ->
-                        ItemRow(
+                        SimilarItemsRow(
                             item = item,
-                            onAddClick = onAddClick,
-                            onRemoveClick = onRemoveClick
+                            onAddToCart = { similarItem, qty -> }
                         )
                     }
                 }
@@ -169,8 +178,8 @@ fun ItemScreenContent(
 fun ItemScreenPreview() {
     ItemScreenContent(
         items = listOf(
-            ItemData(1, "Desc", 1, "", "Item 1", 10.0, 0),
-            ItemData(1, "Desc", 2, "", "Item 2", 20.0, 5)
+            Item(1, "Desc", 1, "", "Item 1", 10.0, 0),
+            Item(1, "Desc", 2, "", "Item 2", 20.0, 5)
         ),
         isLoading = false,
         cartUiState = AddToCartViewModel.UiState.Idle,

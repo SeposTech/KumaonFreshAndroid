@@ -9,6 +9,7 @@ import com.himanshumehra.kumaonfresh.data.remote.api.dto.response.AddToCartRespo
 import com.himanshumehra.kumaonfresh.data.remote.api.dto.response.CartDetailResponse
 import com.himanshumehra.kumaonfresh.data.remote.api.dto.response.CategoryResponse
 import com.himanshumehra.kumaonfresh.data.remote.api.dto.response.CreateUserResponse
+import com.himanshumehra.kumaonfresh.data.remote.api.dto.response.HomeResponse
 import com.himanshumehra.kumaonfresh.data.remote.api.dto.response.ItemResponse
 import com.himanshumehra.kumaonfresh.data.remote.api.dto.response.LoginResponse
 import com.himanshumehra.kumaonfresh.data.remote.api.dto.response.QuantityAddRemoveResponse
@@ -50,5 +51,7 @@ interface ApiService {
         @Body request: RemoveQuantityFromCart
     ): QuantityAddRemoveResponse
 
+    @GET("home/fetchHome")
+    suspend fun fetchHome(): HomeResponse
 
 }

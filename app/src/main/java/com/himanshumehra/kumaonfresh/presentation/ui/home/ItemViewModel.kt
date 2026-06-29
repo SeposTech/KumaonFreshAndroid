@@ -3,7 +3,7 @@ package com.himanshumehra.kumaonfresh.presentation.ui.home
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.himanshumehra.kumaonfresh.data.remote.api.dto.response.ItemData
+import com.himanshumehra.kumaonfresh.data.remote.api.dto.response.Item
 import com.himanshumehra.kumaonfresh.domain.usecase.ItemUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,8 +19,8 @@ class ItemViewModel @Inject constructor(
 
     val catId = savedStateHandle.get<Long>("catId")
 
-    private val _items = MutableStateFlow<List<ItemData>>(emptyList())
-    val items: StateFlow<List<ItemData>> = _items
+    private val _items = MutableStateFlow<List<Item>>(emptyList())
+    val items: StateFlow<List<Item>> = _items
 
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
@@ -43,7 +43,7 @@ class ItemViewModel @Inject constructor(
         }
     }
 
-    fun incrementQuantity(item: ItemData) {
+    fun incrementQuantity(item: Item) {
         val currentList = _items.value.toMutableList()
         val index = currentList.indexOfFirst { it.itemId == item.itemId }
         if (index != -1) {
@@ -53,7 +53,7 @@ class ItemViewModel @Inject constructor(
         }
     }
 
-    fun decrementQuantity(item: ItemData) {
+    fun decrementQuantity(item: Item) {
         val currentList = _items.value.toMutableList()
         val index = currentList.indexOfFirst { it.itemId == item.itemId }
         if (index != -1 && currentList[index].itemQuantity > 0) {
