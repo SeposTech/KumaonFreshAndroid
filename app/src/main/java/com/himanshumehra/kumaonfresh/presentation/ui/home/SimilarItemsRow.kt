@@ -45,7 +45,7 @@ import com.himanshumehra.kumaonfresh.data.remote.api.dto.response.Item
 import com.himanshumehra.kumaonfresh.utils.Constants.ITEM_IMAGE_BASE_URL
 
 @Composable
-fun ItemsRow(
+fun SimilarItemsRow(
     item: Item,
     onAddToCart: (Item, Int) -> Unit = { _, _ -> }
 ) {
@@ -199,8 +199,8 @@ fun ItemsRow(
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewItemsRow() {
-    ItemsRow(
+fun PreviewSimilarItemsRow() {
+    SimilarItemsRow(
         item = Item(
             categoryId = null,
             itemId = 1,

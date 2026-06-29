@@ -2,11 +2,12 @@ package com.himanshumehra.kumaonfresh.presentation.ui.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -18,7 +19,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -40,7 +40,7 @@ fun CategoryRowScreen(
     categoryName: String,
     onClick: () -> Unit = {}
 ) {
-    CategoryItem(imageUrl, categoryName, onClick = {onClick()})
+    CategoryItem(imageUrl, categoryName, onClick = { onClick() })
 }
 
 @Composable
@@ -49,68 +49,48 @@ fun CategoryItem(
     categoryName: String,
     onClick: () -> Unit
 ) {
+    Card(
+        modifier = Modifier
+            .width(150.dp)
+            .clickable { onClick() },
+        elevation = CardDefaults.cardElevation(4.dp),
+        shape = RoundedCornerShape(8.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Image(
+                painter = rememberAsyncImagePainter(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(imageUrl)
+                        .decoderFactory(SvgDecoder.Factory())
+                        .build()
+                ),
+                contentDescription = "Category Image",
+                modifier = Modifier
+                    .size(80.dp)
+                    .clip(CircleShape),
+                contentScale = ContentScale.Crop
+            )
 
-    Surface(modifier = Modifier.fillMaxSize()) {
+            Spacer(modifier = Modifier.height(8.dp))
 
-        Column(modifier = Modifier
-            .fillMaxWidth()
-            .padding(10.dp)) {
-
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                elevation = CardDefaults.cardElevation(8.dp),
-                shape = RoundedCornerShape(8.dp)
-            ) {
-                Row(
-                    modifier = Modifier
-                        .padding(12.dp)
-                        .fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-
-                    Image(
-                        painter = rememberAsyncImagePainter(
-                            model = ImageRequest.Builder(LocalContext.current)
-                                .data(CATEGORY_IMAGE_BASE_URL.plus(imageUrl))
-                                .decoderFactory(SvgDecoder.Factory())
-                                .build()
-                        ),
-                        contentDescription = "Category Image",
-                        modifier = Modifier
-                            .size(50.dp)
-                            .clip(CircleShape),
-                        contentScale = ContentScale.Crop
-                    )
-
-                    Spacer(modifier = Modifier.width(12.dp))
-
-                    Text(
-                        text = categoryName,
-                        modifier = Modifier.weight(1f),
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-
-                    Icon(
-                        modifier = Modifier.clickable{ onClick() },
-                        imageVector = Icons.AutoMirrored.Default.ArrowForward,
-                        contentDescription = "Go",
-                        tint = Color.Gray
-                    )
-
-                }
-
-
-            }
+            Text(
+                text = categoryName,
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier.padding(horizontal = 4.dp),
+                maxLines = 2
+            )
         }
-
-
     }
-
-
 }
 
 @Preview
 @Composable
 fun PreviewCategoryRowScreen() {
-    CategoryRowScreen("", "", {})
+    CategoryRowScreen("", "Combo ₹499", {})
 }
