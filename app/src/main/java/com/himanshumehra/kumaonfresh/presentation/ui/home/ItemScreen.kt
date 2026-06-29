@@ -1,5 +1,6 @@
 package com.himanshumehra.kumaonfresh.presentation.ui.home
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -159,10 +160,12 @@ fun ItemScreenContent(
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(2),
                     contentPadding = PaddingValues(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
                     modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
                 ) {
                     items(items) { item ->
-                        SimilarItemsRow(
+                        ItemsRow(
                             item = item,
                             onAddToCart = { similarItem, qty -> }
                         )

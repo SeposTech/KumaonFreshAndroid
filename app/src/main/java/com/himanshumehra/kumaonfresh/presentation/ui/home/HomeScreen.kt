@@ -3,6 +3,7 @@ package com.himanshumehra.kumaonfresh.presentation.ui.home
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -40,6 +41,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -65,7 +67,7 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel = hiltView
         }
 
         is HomeViewModel.UiState.Error -> {
-            // Show error message
+            // TODO: Show proper error UI
         }
     }
 }
@@ -86,11 +88,14 @@ fun LoadCategory(navController: NavController, data: HomeData) {
                 drawerShape = RoundedCornerShape(topEnd = 16.dp, bottomEnd = 16.dp),
                 drawerContainerColor = Color.White
             ) {
-                // Drawer Header
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(Color(0xFFD32F2F))
+                        .background(
+                            Brush.horizontalGradient(
+                                colors = listOf(Color(0xFFD32F2F), Color(0xFFEF5350))
+                            )
+                        )
                         .padding(24.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
@@ -110,13 +115,12 @@ fun LoadCategory(navController: NavController, data: HomeData) {
                     Text(
                         text = "Fresh from the hills",
                         fontSize = 12.sp,
-                        color = Color.White.copy(alpha = 0.8f)
+                        color = Color.White.copy(alpha = 0.85f)
                     )
                 }
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                // Drawer Items
                 NavigationDrawerItem(
                     icon = {
                         Icon(
@@ -125,12 +129,7 @@ fun LoadCategory(navController: NavController, data: HomeData) {
                             tint = Color(0xFFD32F2F)
                         )
                     },
-                    label = {
-                        Text(
-                            text = "Home",
-                            fontWeight = FontWeight.Medium
-                        )
-                    },
+                    label = { Text(text = "Home", fontWeight = FontWeight.Medium) },
                     selected = true,
                     onClick = { scope.launch { drawerState.close() } },
                     colors = NavigationDrawerItemDefaults.colors(
@@ -149,12 +148,7 @@ fun LoadCategory(navController: NavController, data: HomeData) {
                             tint = Color(0xFFD32F2F)
                         )
                     },
-                    label = {
-                        Text(
-                            text = "My Cart",
-                            fontWeight = FontWeight.Medium
-                        )
-                    },
+                    label = { Text(text = "My Cart", fontWeight = FontWeight.Medium) },
                     selected = false,
                     onClick = {
                         scope.launch { drawerState.close() }
@@ -178,12 +172,7 @@ fun LoadCategory(navController: NavController, data: HomeData) {
                             tint = Color(0xFFD32F2F)
                         )
                     },
-                    label = {
-                        Text(
-                            text = "Profile",
-                            fontWeight = FontWeight.Medium
-                        )
-                    },
+                    label = { Text(text = "Profile", fontWeight = FontWeight.Medium) },
                     selected = false,
                     onClick = { scope.launch { drawerState.close() } },
                     modifier = Modifier.padding(horizontal = 12.dp)
@@ -193,31 +182,30 @@ fun LoadCategory(navController: NavController, data: HomeData) {
     ) {
         Surface(
             modifier = Modifier.fillMaxSize(),
-            color = Color(0xFFF5F5F5)
+            color = Color(0xFFF2F6FF) // Changed from white/gray to soft attractive blue tint
         ) {
             Scaffold(
+                containerColor = Color.Transparent,
                 topBar = {
                     CenterAlignedTopAppBar(
                         title = {
                             Text(
                                 text = "Kumaon Fresh",
-                                fontSize = 20.sp,
+                                fontSize = 21.sp,
                                 fontWeight = FontWeight.Bold
                             )
                         },
                         navigationIcon = {
-                            IconButton(onClick = {
-                                scope.launch { drawerState.open() }
-                            }) {
+                            IconButton(onClick = { scope.launch { drawerState.open() } }) {
                                 Icon(
                                     imageVector = Icons.Default.Menu,
                                     contentDescription = "Menu",
-                                    tint = Color.White
+                                    tint = Color(0xFF1B5E20) // dark green icon for contrast
                                 )
                             }
                         },
                         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                            containerColor = Color(0xFFD32F2F),
+                            containerColor = Color(0xFF4F6F52), // deep forest green
                             titleContentColor = Color.White,
                             navigationIconContentColor = Color.White
                         )
@@ -229,13 +217,14 @@ fun LoadCategory(navController: NavController, data: HomeData) {
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(padding)
-                        .background(Color(0xFFF5F5F5))
+                        .background(Color(0xFFF2F6FF)),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
 
                     item {
                         BannerScreen(
                             banners = data.banners,
-                            modifier = Modifier.padding(bottom = 8.dp)
+                            modifier = Modifier.padding(bottom = 6.dp)
                         )
                     }
 
@@ -243,20 +232,27 @@ fun LoadCategory(navController: NavController, data: HomeData) {
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(16.dp)
+                                .background(
+                                    Brush.horizontalGradient(
+                                        colors = listOf(Color(0xFF4F6F52), Color(0xFF7FA37F))
+                                    )
+                                )
+                                .padding(horizontal = 20.dp, vertical = 18.dp)
                         ) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Text(
+                                    text = "Featured Categories",
+                                    style = MaterialTheme.typography.headlineSmall,
+                                    fontWeight = FontWeight.ExtraBold,
+                                    fontSize = 21.sp,
+                                    color = Color.White
+                                )
+                            }
                             Text(
-                                text = "Featured Categories",
-                                style = MaterialTheme.typography.headlineSmall,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 18.sp,
-                                color = Color(0xFF1976D2)
-                            )
-                            Text(
-                                text = "Explore our collection",
+                                text = "Explore our handpicked collection",
                                 style = MaterialTheme.typography.bodySmall,
-                                color = Color.Gray,
-                                modifier = Modifier.padding(top = 4.dp)
+                                color = Color.White.copy(alpha = 0.9f),
+                                modifier = Modifier.padding(top = 6.dp)
                             )
                         }
                     }
@@ -265,7 +261,7 @@ fun LoadCategory(navController: NavController, data: HomeData) {
                         LazyRow(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(horizontal = 12.dp, vertical = 8.dp),
+                                .padding(horizontal = 12.dp, vertical = 6.dp),
                             horizontalArrangement = Arrangement.spacedBy(12.dp)
                         ) {
                             items(data.categories) { category ->
@@ -285,20 +281,27 @@ fun LoadCategory(navController: NavController, data: HomeData) {
                             Column(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(16.dp)
+                                    .background(
+                                        Brush.horizontalGradient(
+                                            colors = listOf(Color(0xFF546E7A), Color(0xFF90A4AE))
+                                        )
+                                    )
+                                    .padding(horizontal = 20.dp, vertical = 18.dp)
                             ) {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Text(
+                                        text = "Popular Items",
+                                        style = MaterialTheme.typography.headlineSmall,
+                                        fontWeight = FontWeight.ExtraBold,
+                                        fontSize = 21.sp,
+                                        color = Color.White
+                                    )
+                                }
                                 Text(
-                                    text = "Popular Items",
-                                    style = MaterialTheme.typography.headlineSmall,
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = 18.sp,
-                                    color = Color(0xFF1976D2)
-                                )
-                                Text(
-                                    text = "Best sellers & trending",
+                                    text = "Best sellers and trending picks",
                                     style = MaterialTheme.typography.bodySmall,
-                                    color = Color.Gray,
-                                    modifier = Modifier.padding(top = 4.dp)
+                                    color = Color.White.copy(alpha = 0.9f),
+                                    modifier = Modifier.padding(top = 6.dp)
                                 )
                             }
                         }
@@ -306,16 +309,20 @@ fun LoadCategory(navController: NavController, data: HomeData) {
 
                     item {
                         LazyRow(
-                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
                             horizontalArrangement = Arrangement.spacedBy(12.dp)
                         ) {
                             items(data.similarItems) { item ->
                                 SimilarItemsRow(
                                     item = item,
-                                    onAddToCart = { similarItem, qty -> }
+                                    onAddToCart = { _, _ -> }
                                 )
                             }
                         }
+                    }
+
+                    item {
+                        Spacer(modifier = Modifier.height(14.dp))
                     }
                 }
             }
